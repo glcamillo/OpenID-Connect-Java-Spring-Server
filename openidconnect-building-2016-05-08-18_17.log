@@ -1,0 +1,320 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] MITREid Connect
+[INFO] OpenID Connect Common
+[INFO] OpenID Connect Client
+[INFO] OpenID Connect Server Library
+[INFO] OpenID Connect Server Webapp
+[INFO] UMA Server Library
+[INFO] UMA Server Webapp
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building MITREid Connect 1.2.7-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven) @ openid-connect-parent ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven-3) @ openid-connect-parent ---
+[INFO] 
+[INFO] --- maven-javadoc-plugin:2.9:jar (attach-javadocs) @ openid-connect-parent ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] >>> maven-source-plugin:2.2:jar (attach-sources) > generate-sources @ openid-connect-parent >>>
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven) @ openid-connect-parent ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven-3) @ openid-connect-parent ---
+[INFO] 
+[INFO] <<< maven-source-plugin:2.2:jar (attach-sources) < generate-sources @ openid-connect-parent <<<
+[INFO] 
+[INFO] --- maven-source-plugin:2.2:jar (attach-sources) @ openid-connect-parent ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building OpenID Connect Common 1.2.7-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven) @ openid-connect-common ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven-3) @ openid-connect-common ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ openid-connect-common ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/openid-connect-common/src/main/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ openid-connect-common ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ openid-connect-common ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/openid-connect-common/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:testCompile (default-testCompile) @ openid-connect-common ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ openid-connect-common ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ openid-connect-common ---
+[INFO] 
+[INFO] --- maven-javadoc-plugin:2.9:jar (attach-javadocs) @ openid-connect-common ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] --- maven-javadoc-plugin:2.9:jar (attach-sources) @ openid-connect-common ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] --- maven-source-plugin:2.2:jar-no-fork (attach-sources) @ openid-connect-common ---
+[INFO] 
+[INFO] >>> maven-source-plugin:2.2:jar (attach-sources) > generate-sources @ openid-connect-common >>>
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven) @ openid-connect-common ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven-3) @ openid-connect-common ---
+[INFO] 
+[INFO] <<< maven-source-plugin:2.2:jar (attach-sources) < generate-sources @ openid-connect-common <<<
+[INFO] 
+[INFO] --- maven-source-plugin:2.2:jar (attach-sources) @ openid-connect-common ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building OpenID Connect Client 1.2.7-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven) @ openid-connect-client ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven-3) @ openid-connect-client ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ openid-connect-client ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/openid-connect-client/src/main/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ openid-connect-client ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ openid-connect-client ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 5 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:testCompile (default-testCompile) @ openid-connect-client ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ openid-connect-client ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ openid-connect-client ---
+[INFO] 
+[INFO] --- maven-javadoc-plugin:2.9:jar (attach-javadocs) @ openid-connect-client ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] --- maven-javadoc-plugin:2.9:jar (attach-sources) @ openid-connect-client ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] --- maven-source-plugin:2.2:jar-no-fork (attach-sources) @ openid-connect-client ---
+[INFO] 
+[INFO] >>> maven-source-plugin:2.2:jar (attach-sources) > generate-sources @ openid-connect-client >>>
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven) @ openid-connect-client ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven-3) @ openid-connect-client ---
+[INFO] 
+[INFO] <<< maven-source-plugin:2.2:jar (attach-sources) < generate-sources @ openid-connect-client <<<
+[INFO] 
+[INFO] --- maven-source-plugin:2.2:jar (attach-sources) @ openid-connect-client ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building OpenID Connect Server Library 1.2.7-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven) @ openid-connect-server ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven-3) @ openid-connect-server ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ openid-connect-server ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/openid-connect-server/src/main/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ openid-connect-server ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ openid-connect-server ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/openid-connect-server/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:testCompile (default-testCompile) @ openid-connect-server ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ openid-connect-server ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ openid-connect-server ---
+[INFO] 
+[INFO] --- maven-javadoc-plugin:2.9:jar (attach-javadocs) @ openid-connect-server ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] >>> maven-source-plugin:2.2:jar (attach-sources) > generate-sources @ openid-connect-server >>>
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven) @ openid-connect-server ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven-3) @ openid-connect-server ---
+[INFO] 
+[INFO] <<< maven-source-plugin:2.2:jar (attach-sources) < generate-sources @ openid-connect-server <<<
+[INFO] 
+[INFO] --- maven-source-plugin:2.2:jar (attach-sources) @ openid-connect-server ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building OpenID Connect Server Webapp 1.2.7-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven) @ openid-connect-server-webapp ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven-3) @ openid-connect-server-webapp ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ openid-connect-server-webapp ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 10 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ openid-connect-server-webapp ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ openid-connect-server-webapp ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/openid-connect-server-webapp/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:testCompile (default-testCompile) @ openid-connect-server-webapp ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ openid-connect-server-webapp ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-war-plugin:2.2:war (default-war) @ openid-connect-server-webapp ---
+[INFO] Packaging webapp
+[INFO] Assembling webapp [openid-connect-server-webapp] in [/home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/openid-connect-server-webapp/target/openid-connect-server-webapp-1.2.7-SNAPSHOT]
+[INFO] Processing war project
+[INFO] Copying webapp webResources [/home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/openid-connect-server-webapp/src/main/webapp] to [/home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/openid-connect-server-webapp/target/openid-connect-server-webapp-1.2.7-SNAPSHOT]
+[INFO] Copying webapp webResources [/home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/openid-connect-server-webapp/src/main/webapp] to [/home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/openid-connect-server-webapp/target/openid-connect-server-webapp-1.2.7-SNAPSHOT]
+[INFO] Copying webapp resources [/home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/openid-connect-server-webapp/src/main/webapp]
+[INFO] Webapp assembled in [555 msecs]
+[INFO] Building war: /home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/openid-connect-server-webapp/target/openid-connect-server-webapp.war
+[INFO] WEB-INF/web.xml already added, skipping
+[INFO] 
+[INFO] --- maven-javadoc-plugin:2.9:jar (attach-javadocs) @ openid-connect-server-webapp ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] >>> maven-source-plugin:2.2:jar (attach-sources) > generate-sources @ openid-connect-server-webapp >>>
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven) @ openid-connect-server-webapp ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven-3) @ openid-connect-server-webapp ---
+[INFO] 
+[INFO] <<< maven-source-plugin:2.2:jar (attach-sources) < generate-sources @ openid-connect-server-webapp <<<
+[INFO] 
+[INFO] --- maven-source-plugin:2.2:jar (attach-sources) @ openid-connect-server-webapp ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building UMA Server Library 1.2.7-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven) @ uma-server ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven-3) @ uma-server ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ uma-server ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/uma-server/src/main/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ uma-server ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ uma-server ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/uma-server/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:testCompile (default-testCompile) @ uma-server ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ uma-server ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ uma-server ---
+[INFO] 
+[INFO] --- maven-javadoc-plugin:2.9:jar (attach-javadocs) @ uma-server ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] >>> maven-source-plugin:2.2:jar (attach-sources) > generate-sources @ uma-server >>>
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven) @ uma-server ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven-3) @ uma-server ---
+[INFO] 
+[INFO] <<< maven-source-plugin:2.2:jar (attach-sources) < generate-sources @ uma-server <<<
+[INFO] 
+[INFO] --- maven-source-plugin:2.2:jar (attach-sources) @ uma-server ---
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building UMA Server Webapp 1.2.7-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven) @ uma-server-webapp ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven-3) @ uma-server-webapp ---
+[INFO] 
+[INFO] --- warpath-maven-plugin:3.5.0:add-classes (default) @ uma-server-webapp ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ uma-server-webapp ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 2 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:compile (default-compile) @ uma-server-webapp ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ uma-server-webapp ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/uma-server-webapp/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.5.1:testCompile (default-testCompile) @ uma-server-webapp ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ uma-server-webapp ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-war-plugin:2.2:war (default-war) @ uma-server-webapp ---
+[INFO] Packaging webapp
+[INFO] Assembling webapp [uma-server-webapp] in [/home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/uma-server-webapp/target/uma-server-webapp-1.2.7-SNAPSHOT]
+[INFO] Processing war project
+[INFO] Copying webapp resources [/home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/uma-server-webapp/src/main/webapp]
+[INFO] Processing overlay [ id org.mitre:openid-connect-server-webapp]
+[INFO] Webapp assembled in [1691 msecs]
+[INFO] Building war: /home/nimbus/prog-projmestrado/OpenID-Connect-Java-Spring-Server/uma-server-webapp/target/uma-server-webapp-1.2.7-SNAPSHOT.war
+[INFO] WEB-INF/web.xml already added, skipping
+[INFO] 
+[INFO] --- maven-javadoc-plugin:2.9:jar (attach-javadocs) @ uma-server-webapp ---
+[INFO] Skipping javadoc generation
+[INFO] 
+[INFO] >>> maven-source-plugin:2.2:jar (attach-sources) > generate-sources @ uma-server-webapp >>>
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven) @ uma-server-webapp ---
+[INFO] 
+[INFO] --- maven-enforcer-plugin:1.2:enforce (enforce-maven-3) @ uma-server-webapp ---
+[INFO] 
+[INFO] --- warpath-maven-plugin:3.5.0:add-classes (default) @ uma-server-webapp ---
+[INFO] 
+[INFO] <<< maven-source-plugin:2.2:jar (attach-sources) < generate-sources @ uma-server-webapp <<<
+[INFO] 
+[INFO] --- maven-source-plugin:2.2:jar (attach-sources) @ uma-server-webapp ---
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary:
+[INFO] 
+[INFO] MITREid Connect .................................... SUCCESS [  1.336 s]
+[INFO] OpenID Connect Common .............................. SUCCESS [  1.080 s]
+[INFO] OpenID Connect Client .............................. SUCCESS [  0.248 s]
+[INFO] OpenID Connect Server Library ...................... SUCCESS [  0.321 s]
+[INFO] OpenID Connect Server Webapp ....................... SUCCESS [  2.444 s]
+[INFO] UMA Server Library ................................. SUCCESS [  0.089 s]
+[INFO] UMA Server Webapp .................................. SUCCESS [  3.859 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 9.996 s
+[INFO] Finished at: 2016-05-08T18:18:12-03:00
+[INFO] Final Memory: 26M/564M
+[INFO] ------------------------------------------------------------------------

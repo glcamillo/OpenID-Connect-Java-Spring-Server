@@ -2,8 +2,6 @@
 -- Turn off autocommit and start a transaction so that we can use the temp tables
 --
 
-SET AUTOCOMMIT FALSE;
-
 START TRANSACTION;
 
 --
@@ -23,7 +21,7 @@ INSERT INTO client_scope_TEMP (owner_id, scope) VALUES
 
 INSERT INTO client_redirect_uri_TEMP (owner_id, redirect_uri) VALUES
 	('client', 'http://localhost/'),
-	('client', 'http://localhost:8080/');
+	('client', 'http://localhost:8084/');
 	
 INSERT INTO client_grant_type_TEMP (owner_id, grant_type) VALUES
 	('client', 'authorization_code'),
@@ -65,5 +63,4 @@ MERGE INTO client_grant_type
     
 COMMIT;
 
-SET AUTOCOMMIT TRUE;
 
