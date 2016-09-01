@@ -6,9 +6,9 @@
 	http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
 	PolicyId="urn:oasis:names:tc:xacml:3.0:xacmlpolicybookstore:policyid:pbookstrestrictview"
 	Version="1.0"
-	RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides">
+	RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-overrides">
     <Description>
-		User with login on OP and age higher 18 years can view/browse material with restrict access.
+		User with login on OP can view/browse material with restrict access.
 	</Description>
    <Target>
       <AnyOf>
@@ -23,7 +23,7 @@
          </AllOf>
       </AnyOf>
    </Target>
-   <Rule Effect="Permit" RuleId="PermitUsersWithLoginOPandAgeHigOrEq18">
+   <Rule Effect="Permit" RuleId="PermitUsersWithLoginOP">
 	   <Description />
 	   <Target>
 		   <AnyOf>
@@ -36,7 +36,7 @@
 							MustBePresent="true"/>
                     </Match>
                     <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">POST</AttributeValue>
+                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GET</AttributeValue>
                         <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
 							Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
 							DataType="http://www.w3.org/2001/XMLSchema#string"
@@ -45,14 +45,6 @@
 					</AllOf>
 			</AnyOf>
 		</Target>
-		<Condition>
-			<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-greater-than-or-equal">
-				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#integer">18</AttributeValue>
-				<AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:3.0:attribute:age"
-					DataType="http://www.w3.org/2001/XMLSchema#integer"
-					MustBePresent="true"
-					Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" />
-			</Apply>
-		</Condition>
    </Rule>
+   <Rule Effect="Deny" RuleId="deny-rule"></Rule>   
 </Policy>

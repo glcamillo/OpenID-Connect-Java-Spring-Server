@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Policy 
+	xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17
+	http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+	PolicyId="urn:oasis:names:tc:xacml:3.0:xacmlpolicybookstore:policyid:pbookstrestrictageview"
+	Version="1.0"
+	RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-overrides">
+    <Description>User with login on OP and age higher 18 years can view/browse material with restrict access. </Description>
+   <Target>
+      <AnyOf>
+         <AllOf>
+	        <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:anyURI-equal">
+        		<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#anyURI">http://localhost:8084/pepclientapp/bookstore/restrict/age/view</AttributeValue>
+		    <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" 
+    			Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+    			DataType="http://www.w3.org/2001/XMLSchema#anyURI"
+	    		MustBePresent="true"/>
+        	</Match>
+         </AllOf>
+      </AnyOf>
+   </Target>
+   <Rule Effect="Permit" RuleId="PermitUsersWithLoginOPandAgeHigOrEq18">
+	<Description />
+	<Target>
+		<AnyOf>
+			<AllOf>
+				<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:anyURI-equal">
+					<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#anyURI">http://localhost:8080/openid-connect-server-webapp/</AttributeValue>
+					<AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id-qualifier"
+						Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+						DataType="http://www.w3.org/2001/XMLSchema#anyURI"
+						MustBePresent="true"/>
+				</Match>
+				<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+					<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GET</AttributeValue>
+					<AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
+						Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+						DataType="http://www.w3.org/2001/XMLSchema#string"
+						MustBePresent="true"/>
+				</Match>
+			</AllOf>
+		</AnyOf>
+	</Target>
+	<Condition>
+		<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-greater-than-or-equal">
+			<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-one-and-only">
+			<AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:3.0:attribute:age"
+				DataType="http://www.w3.org/2001/XMLSchema#integer"
+				MustBePresent="true"
+				Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" />
+			</Apply>
+			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#integer">18</AttributeValue> 
+		</Apply> 
+	</Condition>
+</Rule>
+   <Rule Effect="Deny" RuleId="deny-rule"></Rule>
+</Policy>
