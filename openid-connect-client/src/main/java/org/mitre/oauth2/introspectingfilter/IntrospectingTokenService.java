@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2016 The MITRE Corporation
+ * Copyright 2017 The MITRE Corporation
  *   and the MIT Internet Trust Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -73,10 +73,15 @@ public class IntrospectingTokenService implements ResourceServerTokenServices {
 	private boolean cacheNonExpiringTokens = false;
 	private boolean cacheTokens = true;
 
-	private HttpClient httpClient = HttpClientBuilder.create()
-			.useSystemProperties()
-			.build();
-	private HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(httpClient);
+	private HttpComponentsClientHttpRequestFactory factory;
+
+	public IntrospectingTokenService() {
+		this(HttpClientBuilder.create().useSystemProperties().build());
+	}
+
+	public IntrospectingTokenService(HttpClient httpClient) {
+		this.factory = new HttpComponentsClientHttpRequestFactory(httpClient);
+	}
 
 	// Inner class to store in the hash map
 	private class TokenCacheObject {
@@ -235,8 +240,13 @@ public class IntrospectingTokenService implements ResourceServerTokenServices {
 		return storedRequest;
 	}
 
-	private Authentication createAuthentication(JsonObject token) {
-		return new PreAuthenticatedAuthenticationToken(token.get("sub").getAsString(), token, introspectionAuthorityGranter.getAuthorities(token));
+	private Authentication createUserAuthentication(JsonObject token) {
+		JsonElement userId = token.get("user_id");
+		if(userId == null) {
+			return null;
+		}
+
+		return new PreAuthenticatedAuthenticationToken(userId.getAsString(), token, introspectionAuthorityGranter.getAuthorities(token));
 	}
 
 	private OAuth2AccessToken createAccessToken(final JsonObject token, final String tokenString) {
@@ -321,7 +331,7 @@ public class IntrospectingTokenService implements ResourceServerTokenServices {
 				return null;
 			}
 			// create an OAuth2Authentication
-			OAuth2Authentication auth = new OAuth2Authentication(createStoredRequest(tokenResponse), createAuthentication(tokenResponse));
+			OAuth2Authentication auth = new OAuth2Authentication(createStoredRequest(tokenResponse), createUserAuthentication(tokenResponse));
 			// create an OAuth2AccessToken
 			OAuth2AccessToken token = createAccessToken(tokenResponse, accessToken);
 

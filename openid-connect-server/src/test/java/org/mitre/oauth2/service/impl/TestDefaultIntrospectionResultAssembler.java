@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2016 The MITRE Corporation
+ * Copyright 2017 The MITRE Corporation
  *   and the MIT Internet Trust Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,6 +30,8 @@ import org.mitre.oauth2.model.OAuth2RefreshTokenEntity;
 import org.mitre.oauth2.service.IntrospectionResultAssembler;
 import org.mitre.openid.connect.model.UserInfo;
 import org.mitre.uma.model.Permission;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 
@@ -59,7 +61,7 @@ public class TestDefaultIntrospectionResultAssembler {
 
 		// given
 		OAuth2AccessTokenEntity accessToken = accessToken(new Date(123 * 1000L), scopes("foo", "bar"), null, "Bearer",
-				authentication("name", request("clientId")));
+                oauth2AuthenticationWithUser(oauth2Request("clientId"), "name"));
 
 		UserInfo userInfo = userInfo("sub");
 
@@ -89,7 +91,7 @@ public class TestDefaultIntrospectionResultAssembler {
 		// given
 		OAuth2AccessTokenEntity accessToken = accessToken(new Date(123 * 1000L), scopes("foo", "bar"),
 				permissions(permission(1L, "foo", "bar")),
-				"Bearer", authentication("name", request("clientId")));
+                "Bearer", oauth2AuthenticationWithUser(oauth2Request("clientId"), "name"));
 
 		UserInfo userInfo = userInfo("sub");
 
@@ -127,7 +129,7 @@ public class TestDefaultIntrospectionResultAssembler {
 
 		// given
 		OAuth2AccessTokenEntity accessToken = accessToken(new Date(123 * 1000L), scopes("foo", "bar"), null, "Bearer",
-				authentication("name", request("clientId")));
+				oauth2AuthenticationWithUser(oauth2Request("clientId"), "name"));
 
 		Set<String> authScopes = scopes("foo", "bar", "baz");
 
@@ -154,7 +156,7 @@ public class TestDefaultIntrospectionResultAssembler {
 
 		// given
 		OAuth2AccessTokenEntity accessToken = accessToken(null, scopes("foo", "bar"), null, "Bearer",
-				authentication("name", request("clientId")));
+                oauth2AuthenticationWithUser(oauth2Request("clientId"), "name"));
 
 		UserInfo userInfo = userInfo("sub");
 
@@ -177,11 +179,36 @@ public class TestDefaultIntrospectionResultAssembler {
 	}
 
 	@Test
+    public void shouldAssembleExpectedResultForAccessTokenWithoutUserAuthentication() throws ParseException {
+        // given
+        OAuth2AccessTokenEntity accessToken = accessToken(new Date(123 * 1000L), scopes("foo", "bar"), null, "Bearer",
+                oauth2Authentication(oauth2Request("clientId"), null));
+
+        Set<String> authScopes = scopes("foo", "bar", "baz");
+
+        // when
+        Map<String, Object> result = assembler.assembleFrom(accessToken, null, authScopes);
+
+
+        // then `user_id` should not be present
+        Map<String, Object> expected = new ImmutableMap.Builder<String, Object>()
+                .put("sub", "clientId")
+                .put("exp", 123L)
+                .put("expires_at", dateFormat.valueToString(new Date(123 * 1000L)))
+                .put("scope", "bar foo")
+                .put("active", Boolean.TRUE)
+                .put("client_id", "clientId")
+                .put("token_type", "Bearer")
+                .build();
+        assertThat(result, is(equalTo(expected)));
+    }
+
+	@Test
 	public void shouldAssembleExpectedResultForRefreshToken() throws ParseException {
 
 		// given
 		OAuth2RefreshTokenEntity refreshToken = refreshToken(new Date(123 * 1000L),
-				authentication("name", request("clientId", scopes("foo",  "bar"))));
+                oauth2AuthenticationWithUser(oauth2Request("clientId", scopes("foo", "bar")), "name"));
 
 		UserInfo userInfo = userInfo("sub");
 
@@ -209,7 +236,7 @@ public class TestDefaultIntrospectionResultAssembler {
 
 		// given
 		OAuth2RefreshTokenEntity refreshToken = refreshToken(new Date(123 * 1000L),
-				authentication("name", request("clientId", scopes("foo",  "bar"))));
+				oauth2AuthenticationWithUser(oauth2Request("clientId", scopes("foo",  "bar")), "name"));
 
 		Set<String> authScopes = scopes("foo", "bar", "baz");
 
@@ -235,7 +262,7 @@ public class TestDefaultIntrospectionResultAssembler {
 
 		// given
 		OAuth2RefreshTokenEntity refreshToken = refreshToken(null,
-				authentication("name", request("clientId", scopes("foo",  "bar"))));
+				oauth2AuthenticationWithUser(oauth2Request("clientId", scopes("foo",  "bar")), "name"));
 
 		UserInfo userInfo = userInfo("sub");
 
@@ -255,6 +282,30 @@ public class TestDefaultIntrospectionResultAssembler {
 				.build();
 		assertThat(result, is(equalTo(expected)));
 	}
+
+    @Test
+    public void shouldAssembleExpectedResultForRefreshTokenWithoutUserAuthentication() throws ParseException {
+        // given
+        OAuth2RefreshTokenEntity refreshToken = refreshToken(null,
+                oauth2Authentication(oauth2Request("clientId", scopes("foo",  "bar")), null));
+
+        Set<String> authScopes = scopes("foo", "bar", "baz");
+
+        // when
+        Map<String, Object> result = assembler.assembleFrom(refreshToken, null, authScopes);
+
+
+        // then `user_id` should not be present
+        Map<String, Object> expected = new ImmutableMap.Builder<String, Object>()
+                .put("sub", "clientId")
+                .put("scope", "bar foo")
+                .put("active", Boolean.TRUE)
+                .put("client_id", "clientId")
+                .build();
+        assertThat(result, is(equalTo(expected)));
+    }
+
+
 
 	private UserInfo userInfo(String sub) {
 		UserInfo userInfo = mock(UserInfo.class);
@@ -279,18 +330,20 @@ public class TestDefaultIntrospectionResultAssembler {
 		return refreshToken;
 	}
 
-	private OAuth2Authentication authentication(String name, OAuth2Request request) {
-		OAuth2Authentication authentication = mock(OAuth2Authentication.class);
-		given(authentication.getName()).willReturn(name);
-		given(authentication.getOAuth2Request()).willReturn(request);
-		return authentication;
+	private OAuth2Authentication oauth2AuthenticationWithUser(OAuth2Request request, String username) {
+		UsernamePasswordAuthenticationToken userAuthentication = new UsernamePasswordAuthenticationToken(username, "somepassword");
+        return oauth2Authentication(request, userAuthentication);
 	}
 
-	private OAuth2Request request(String clientId) {
-		return request(clientId, null);
+    private OAuth2Authentication oauth2Authentication(OAuth2Request request, Authentication userAuthentication) {
+        return new OAuth2Authentication(request, userAuthentication);
+    }
+
+	private OAuth2Request oauth2Request(String clientId) {
+		return oauth2Request(clientId, null);
 	}
 
-	private OAuth2Request request(String clientId, Set<String> scopes) {
+	private OAuth2Request oauth2Request(String clientId, Set<String> scopes) {
 		return new OAuth2Request(null, clientId, null, true, scopes, null, null, null, null);
 	}
 

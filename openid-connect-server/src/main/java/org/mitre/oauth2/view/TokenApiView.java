@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2016 The MITRE Corporation
+ * Copyright 2017 The MITRE Corporation
  *   and the MIT Internet Trust Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -84,7 +84,6 @@ public class TokenApiView extends AbstractView {
 
 			o.addProperty("value", src.getValue());
 			o.addProperty("id", src.getId());
-			o.addProperty("idTokenId", src.getIdToken() != null ? src.getIdToken().getId() : null);
 			o.addProperty("refreshTokenId", src.getRefreshToken() != null ? src.getRefreshToken().getId() : null);
 
 			o.add("scopes", context.serialize(src.getScope()));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2016 The MITRE Corporation
+ * Copyright 2017 The MITRE Corporation
  *   and the MIT Internet Trust Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -226,7 +226,6 @@ public class MITREidDataService_1_1 extends MITREidDataServiceSupport implements
 	private Map<Long, String> accessTokenToClientRefs = new HashMap<>();
 	private Map<Long, Long> accessTokenToAuthHolderRefs = new HashMap<>();
 	private Map<Long, Long> accessTokenToRefreshTokenRefs = new HashMap<>();
-	private Map<Long, Long> accessTokenToIdTokenRefs = new HashMap<>();
 	private Map<Long, Long> accessTokenOldToNewIdMap = new HashMap<>();
 
 	/**
@@ -246,7 +245,6 @@ public class MITREidDataService_1_1 extends MITREidDataServiceSupport implements
 			String clientId = null;
 			Long authHolderId = null;
 			Long refreshTokenId = null;
-			Long idTokenId = null;
 			while (reader.hasNext()) {
 				switch (reader.peek()) {
 				case END_OBJECT:
@@ -274,8 +272,6 @@ public class MITREidDataService_1_1 extends MITREidDataServiceSupport implements
 						authHolderId = reader.nextLong();
 					} else if (name.equals("refreshTokenId")) {
 						refreshTokenId = reader.nextLong();
-					} else if (name.equals("idTokenId")) {
-						idTokenId = reader.nextLong();
 					} else if (name.equals("scope")) {
 						Set<String> scope = readSet(reader);
 						token.setScope(scope);
@@ -298,9 +294,6 @@ public class MITREidDataService_1_1 extends MITREidDataServiceSupport implements
 			accessTokenToAuthHolderRefs.put(currentId, authHolderId);
 			if (refreshTokenId != null) {
 				accessTokenToRefreshTokenRefs.put(currentId, refreshTokenId);
-			}
-			if (idTokenId != null) {
-				accessTokenToIdTokenRefs.put(currentId, idTokenId);
 			}
 			accessTokenOldToNewIdMap.put(currentId, newId);
 			logger.debug("Read access token {}", currentId);
@@ -824,9 +817,9 @@ public class MITREidDataService_1_1 extends MITREidDataServiceSupport implements
 					} else if (name.equals("defaultScope")) {
 						scope.setDefaultScope(reader.nextBoolean());
 					} else if (name.equals("structured")) {
-						scope.setStructured(reader.nextBoolean());
+						logger.warn("Found a structured scope, ignoring structure");
 					} else if (name.equals("structuredParameter")) {
-						scope.setStructuredParamDescription(reader.nextString());
+						logger.warn("Found a structured scope, ignoring structure");
 					} else if (name.equals("icon")) {
 						scope.setIcon(reader.nextString());
 					} else {
@@ -897,26 +890,19 @@ public class MITREidDataService_1_1 extends MITREidDataServiceSupport implements
 		}
 		accessTokenToRefreshTokenRefs.clear();
 		refreshTokenOldToNewIdMap.clear();
-		for (Long oldAccessTokenId : accessTokenToIdTokenRefs.keySet()) {
-			Long oldIdTokenId = accessTokenToIdTokenRefs.get(oldAccessTokenId);
-			Long newIdTokenId = accessTokenOldToNewIdMap.get(oldIdTokenId);
-			OAuth2AccessTokenEntity idToken = tokenRepository.getAccessTokenById(newIdTokenId);
-			Long newAccessTokenId = accessTokenOldToNewIdMap.get(oldAccessTokenId);
-			OAuth2AccessTokenEntity accessToken = tokenRepository.getAccessTokenById(newAccessTokenId);
-			accessToken.setIdToken(idToken);
-			tokenRepository.saveAccessToken(accessToken);
-		}
-		accessTokenToIdTokenRefs.clear();
 		for (Long oldGrantId : grantToAccessTokensRefs.keySet()) {
 			Set<Long> oldAccessTokenIds = grantToAccessTokensRefs.get(oldGrantId);
-			Set<OAuth2AccessTokenEntity> tokens = new HashSet<>();
-			for(Long oldTokenId : oldAccessTokenIds) {
-				Long newTokenId = accessTokenOldToNewIdMap.get(oldTokenId);
-				tokens.add(tokenRepository.getAccessTokenById(newTokenId));
-			}
+
 			Long newGrantId = grantOldToNewIdMap.get(oldGrantId);
 			ApprovedSite site = approvedSiteRepository.getById(newGrantId);
-			site.setApprovedAccessTokens(tokens);
+
+			for(Long oldTokenId : oldAccessTokenIds) {
+				Long newTokenId = accessTokenOldToNewIdMap.get(oldTokenId);
+				OAuth2AccessTokenEntity token = tokenRepository.getAccessTokenById(newTokenId);
+				token.setApprovedSite(site);
+				tokenRepository.saveAccessToken(token);
+			}
+			
 			approvedSiteRepository.save(site);
 		}
 		accessTokenOldToNewIdMap.clear();

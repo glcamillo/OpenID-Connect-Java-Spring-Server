@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2016 The MITRE Corporation
+ * Copyright 2017 The MITRE Corporation
  *   and the MIT Internet Trust Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -92,7 +92,9 @@ public class DefaultIntrospectionResultAssembler implements IntrospectionResultA
 			result.put(SUB, authentication.getName());
 		}
 
-		result.put(USER_ID, authentication.getName());
+		if(authentication.getUserAuthentication() != null) {
+			result.put(USER_ID, authentication.getUserAuthentication().getName());
+		}
 
 		result.put(CLIENT_ID, authentication.getOAuth2Request().getClientId());
 
@@ -131,7 +133,9 @@ public class DefaultIntrospectionResultAssembler implements IntrospectionResultA
 			result.put(SUB, authentication.getName());
 		}
 
-		result.put(USER_ID, authentication.getName());
+		if(authentication.getUserAuthentication() != null) {
+			result.put(USER_ID, authentication.getUserAuthentication().getName());
+		}
 
 		result.put(CLIENT_ID, authentication.getOAuth2Request().getClientId());
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2016 The MITRE Corporation
+ * Copyright 2017 The MITRE Corporation
  *   and the MIT Internet Trust Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -119,6 +119,8 @@ public class OIDCAuthenticationFilter extends AbstractAuthenticationProcessingFi
 	@Autowired(required=false)
 	private JWTSigningAndValidationService authenticationSignerService;
 
+	@Autowired(required=false)
+	private HttpClient httpClient;
 
 	/*
 	 * Modular services to build out client filter.
@@ -341,14 +343,14 @@ public class OIDCAuthenticationFilter extends AbstractAuthenticationProcessingFi
 
 		// Handle Token Endpoint interaction
 
-		HttpClient httpClient = HttpClientBuilder.create()
-				.useSystemProperties()
-				.setDefaultRequestConfig(
-						RequestConfig.custom()
-						.setSocketTimeout(httpSocketTimeout)
-						.build()
-						)
-						.build();
+		if(httpClient == null) {
+			httpClient = HttpClientBuilder.create()
+										  .useSystemProperties()
+										  .setDefaultRequestConfig(RequestConfig.custom()
+																				.setSocketTimeout(httpSocketTimeout)
+																				.build())
+										  .build();
+		}
 
 		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(httpClient);
 
@@ -381,9 +383,9 @@ public class OIDCAuthenticationFilter extends AbstractAuthenticationProcessingFi
 				JWSAlgorithm alg = clientConfig.getTokenEndpointAuthSigningAlg();
 
 				if (SECRET_JWT.equals(clientConfig.getTokenEndpointAuthMethod()) &&
-						(alg.equals(JWSAlgorithm.HS256)
-								|| alg.equals(JWSAlgorithm.HS384)
-								|| alg.equals(JWSAlgorithm.HS512))) {
+						(JWSAlgorithm.HS256.equals(alg)
+								|| JWSAlgorithm.HS384.equals(alg)
+								|| JWSAlgorithm.HS512.equals(alg))) {
 
 					// generate one based on client secret
 					signer = symmetricCacheService.getSymmetricValidtor(clientConfig.getClient());
@@ -759,7 +761,9 @@ public class OIDCAuthenticationFilter extends AbstractAuthenticationProcessingFi
 			if (!Strings.isNullOrEmpty(target)) {
 				session.removeAttribute(TARGET_SESSION_VARIABLE);
 
-				target = deepLinkFilter.filter(target);
+				if (deepLinkFilter != null) {
+					target = deepLinkFilter.filter(target);
+				}
 
 				response.sendRedirect(target);
 			} else {

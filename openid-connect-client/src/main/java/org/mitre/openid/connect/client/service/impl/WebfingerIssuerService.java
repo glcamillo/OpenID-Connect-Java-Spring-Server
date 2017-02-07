@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2016 The MITRE Corporation
+ * Copyright 2017 The MITRE Corporation
  *   and the MIT Internet Trust Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -94,7 +94,11 @@ public class WebfingerIssuerService implements IssuerService {
 	private boolean forceHttps = true;
 
 	public WebfingerIssuerService() {
-		issuers = CacheBuilder.newBuilder().build(new WebfingerIssuerFetcher());
+		this(HttpClientBuilder.create().useSystemProperties().build());
+	}
+
+	public WebfingerIssuerService(HttpClient httpClient) {
+		issuers = CacheBuilder.newBuilder().build(new WebfingerIssuerFetcher(httpClient));
 	}
 
 	/* (non-Javadoc)
@@ -114,8 +118,8 @@ public class WebfingerIssuerService implements IssuerService {
 				if (blacklist.contains(lr.issuer)) {
 					throw new AuthenticationServiceException("Issuer was in blacklist: " + lr.issuer);
 				}
-
-				return new IssuerServiceResponse(lr.issuer, lr.loginHint, null);
+				
+				return new IssuerServiceResponse(lr.issuer, lr.loginHint, request.getParameter("target_link_uri"));
 			} catch (UncheckedExecutionException | ExecutionException e) {
 				logger.warn("Issue fetching issuer for user input: " + identifier + ": " + e.getMessage());
 				return null;
@@ -203,11 +207,12 @@ public class WebfingerIssuerService implements IssuerService {
 	 *
 	 */
 	private class WebfingerIssuerFetcher extends CacheLoader<String, LoadingResult> {
-		private HttpClient httpClient = HttpClientBuilder.create()
-				.useSystemProperties()
-				.build();
-		private HttpComponentsClientHttpRequestFactory httpFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+		private HttpComponentsClientHttpRequestFactory httpFactory;
 		private JsonParser parser = new JsonParser();
+
+		WebfingerIssuerFetcher(HttpClient httpClient) {
+			this.httpFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+		}
 
 		@Override
 		public LoadingResult load(String identifier) throws Exception {

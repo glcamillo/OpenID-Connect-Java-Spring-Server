@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2016 The MITRE Corporation
+ * Copyright 2017 The MITRE Corporation
  *   and the MIT Internet Trust Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,6 @@ var AccessTokenModel = Backbone.Model.extend({
 	defaults:{
 		id:null,
 		value:null,
-		idTokenId:null,
 		refreshTokenId:null,
 		scopes:[],
 		clientId:null,

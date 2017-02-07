@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2016 The MITRE Corporation
+ * Copyright 2017 The MITRE Corporation
  *   and the MIT Internet Trust Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,12 +49,6 @@ public interface OAuth2TokenEntityService extends AuthorizationServerTokenServic
 
 	@Override
 	public OAuth2AccessTokenEntity getAccessToken(OAuth2Authentication authentication);
-
-	/**
-	 * @param incomingToken
-	 * @return
-	 */
-	public OAuth2AccessTokenEntity getAccessTokenForIdToken(OAuth2AccessTokenEntity idToken);
 
 	public OAuth2AccessTokenEntity getAccessTokenById(Long id);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2016 The MITRE Corporation
+ * Copyright 2017 The MITRE Corporation
  *   and the MIT Internet Trust Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,6 @@ public interface SystemScopeService {
 
 	public static final String OFFLINE_ACCESS = "offline_access";
 	public static final String OPENID_SCOPE = "openid";
-	public static final String ID_TOKEN_SCOPE = "id-token"; // ID tokens are generated using this scope
 	public static final String REGISTRATION_TOKEN_SCOPE = "registration-token"; // this scope manages dynamic client registrations
 	public static final String RESOURCE_TOKEN_SCOPE = "resource-token"; // this scope manages client-style protected resources
 	public static final String UMA_PROTECTION_SCOPE = "uma_protection";
@@ -41,7 +40,6 @@ public interface SystemScopeService {
 	
 	public static final Set<SystemScope> reservedScopes = 
 		Sets.newHashSet(
-			new SystemScope(ID_TOKEN_SCOPE),
 			new SystemScope(REGISTRATION_TOKEN_SCOPE),
 			new SystemScope(RESOURCE_TOKEN_SCOPE)
 		);
@@ -98,12 +96,7 @@ public interface SystemScopeService {
 	public Set<String> toStrings(Set<SystemScope> scope);
 
 	/**
-	 * Test whether the scopes in both sets are compatible, with special
-	 * processing for structured scopes. All scopes in "actual" must exist in
-	 * "expected". If a scope in "expected" is structured and has a value, it
-	 * must be matched exactly by its corresponding scope in "actual". If a
-	 * scope in "expected" is structured but has no value, it may be matched by
-	 * a scope with or without a value in "actual".
+	 * Test whether the scopes in both sets are compatible. All scopes in "actual" must exist in "expected".
 	 */
 	public boolean scopesMatch(Set<String> expected, Set<String> actual);
 

@@ -1,6 +1,6 @@
 package org.mitre.openid.connect.service.impl;
 /*******************************************************************************
- * Copyright 2016 The MITRE Corporation
+ * Copyright 2017 The MITRE Corporation
  *   and the MIT Internet Trust Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,12 +17,17 @@ package org.mitre.openid.connect.service.impl;
  *******************************************************************************/
 
 
+import static org.mitre.util.JsonUtils.readMap;
+import static org.mitre.util.JsonUtils.readSet;
+import static org.mitre.util.JsonUtils.writeNullSafeArray;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -75,10 +80,6 @@ import com.nimbusds.jose.JWEAlgorithm;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jwt.JWTParser;
-
-import static org.mitre.util.JsonUtils.readMap;
-import static org.mitre.util.JsonUtils.readSet;
-import static org.mitre.util.JsonUtils.writeNullSafeArray;
 
 /**
  *
@@ -441,8 +442,10 @@ public class MITREidDataService_1_2 extends MITREidDataServiceSupport implements
 			.value((token.getAuthenticationHolder() != null) ? token.getAuthenticationHolder().getId() : null);
 			writer.name(REFRESH_TOKEN_ID)
 			.value((token.getRefreshToken() != null) ? token.getRefreshToken().getId() : null);
+/*
 			writer.name(ID_TOKEN_ID)
 			.value((token.getIdToken() != null) ? token.getIdToken().getId() : null);
+*/
 			writer.name(SCOPE);
 			writer.beginArray();
 			for (String s : token.getScope()) {
@@ -567,7 +570,7 @@ public class MITREidDataService_1_2 extends MITREidDataServiceSupport implements
 			writer.name(USER_ID).value(site.getUserId());
 			writer.name(ALLOWED_SCOPES);
 			writeNullSafeArray(writer, site.getAllowedScopes());
-			Set<OAuth2AccessTokenEntity> tokens = site.getApprovedAccessTokens();
+			List<OAuth2AccessTokenEntity> tokens = tokenRepository.getAccessTokensForApprovedSite(site);
 			writer.name(APPROVED_ACCESS_TOKENS);
 			writer.beginArray();
 			for (OAuth2AccessTokenEntity token : tokens) {
@@ -723,8 +726,6 @@ public class MITREidDataService_1_2 extends MITREidDataServiceSupport implements
 				writer.name(ICON).value(sysScope.getIcon());
 				writer.name(VALUE).value(sysScope.getValue());
 				writer.name(RESTRICTED).value(sysScope.isRestricted());
-				writer.name(STRUCTURED).value(sysScope.isStructured());
-				writer.name(STRUCTURED_PARAMETER).value(sysScope.getStructuredParamDescription());
 				writer.name(DEFAULT_SCOPE).value(sysScope.isDefaultScope());
 				writer.endObject();
 				logger.debug("Wrote system scope {}", sysScope.getId());
@@ -1707,9 +1708,9 @@ public class MITREidDataService_1_2 extends MITREidDataServiceSupport implements
 					} else if (name.equals(ICON)) {
 						scope.setIcon(reader.nextString());
 					} else if (name.equals(STRUCTURED)) {
-						scope.setStructured(reader.nextBoolean());
+						logger.debug("Found a structured scope, ignoring structure");
 					} else if (name.equals(STRUCTURED_PARAMETER)) {
-						scope.setStructuredParamDescription(reader.nextString());
+						logger.debug("Found a structured scope, ignoring structure");
 					} else {
 						logger.debug("found unexpected entry");
 						reader.skipValue();
@@ -1779,26 +1780,19 @@ public class MITREidDataService_1_2 extends MITREidDataServiceSupport implements
 		}
 		accessTokenToRefreshTokenRefs.clear();
 		refreshTokenOldToNewIdMap.clear();
-		for (Long oldAccessTokenId : accessTokenToIdTokenRefs.keySet()) {
-			Long oldIdTokenId = accessTokenToIdTokenRefs.get(oldAccessTokenId);
-			Long newIdTokenId = accessTokenOldToNewIdMap.get(oldIdTokenId);
-			OAuth2AccessTokenEntity idToken = tokenRepository.getAccessTokenById(newIdTokenId);
-			Long newAccessTokenId = accessTokenOldToNewIdMap.get(oldAccessTokenId);
-			OAuth2AccessTokenEntity accessToken = tokenRepository.getAccessTokenById(newAccessTokenId);
-			accessToken.setIdToken(idToken);
-			tokenRepository.saveAccessToken(accessToken);
-		}
-		accessTokenToIdTokenRefs.clear();
 		for (Long oldGrantId : grantToAccessTokensRefs.keySet()) {
 			Set<Long> oldAccessTokenIds = grantToAccessTokensRefs.get(oldGrantId);
-			Set<OAuth2AccessTokenEntity> tokens = new HashSet<OAuth2AccessTokenEntity>();
-			for(Long oldTokenId : oldAccessTokenIds) {
-				Long newTokenId = accessTokenOldToNewIdMap.get(oldTokenId);
-				tokens.add(tokenRepository.getAccessTokenById(newTokenId));
-			}
+
 			Long newGrantId = grantOldToNewIdMap.get(oldGrantId);
 			ApprovedSite site = approvedSiteRepository.getById(newGrantId);
-			site.setApprovedAccessTokens(tokens);
+
+			for(Long oldTokenId : oldAccessTokenIds) {
+				Long newTokenId = accessTokenOldToNewIdMap.get(oldTokenId);
+				OAuth2AccessTokenEntity token = tokenRepository.getAccessTokenById(newTokenId);
+				token.setApprovedSite(site);
+				tokenRepository.saveAccessToken(token);
+			}
+			
 			approvedSiteRepository.save(site);
 		}
 		accessTokenOldToNewIdMap.clear();

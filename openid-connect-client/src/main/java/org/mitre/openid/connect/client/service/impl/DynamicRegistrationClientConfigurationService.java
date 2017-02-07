@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2016 The MITRE Corporation
+ * Copyright 2017 The MITRE Corporation
  *   and the MIT Internet Trust Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -72,7 +72,11 @@ public class DynamicRegistrationClientConfigurationService implements ClientConf
 	private Set<String> blacklist = new HashSet<>();
 
 	public DynamicRegistrationClientConfigurationService() {
-		clients = CacheBuilder.newBuilder().build(new DynamicClientRegistrationLoader());
+		this(HttpClientBuilder.create().useSystemProperties().build());
+	}
+
+	public DynamicRegistrationClientConfigurationService(HttpClient httpClient) {
+		clients = CacheBuilder.newBuilder().build(new DynamicClientRegistrationLoader(httpClient));
 	}
 
 	@Override
@@ -168,12 +172,16 @@ public class DynamicRegistrationClientConfigurationService implements ClientConf
 	 *
 	 */
 	public class DynamicClientRegistrationLoader extends CacheLoader<ServerConfiguration, RegisteredClient> {
-		private HttpClient httpClient = HttpClientBuilder.create()
-				.useSystemProperties()
-				.build();
-
-		private HttpComponentsClientHttpRequestFactory httpFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+		private HttpComponentsClientHttpRequestFactory httpFactory;
 		private Gson gson = new Gson(); // note that this doesn't serialize nulls by default
+
+		public DynamicClientRegistrationLoader() {
+			this(HttpClientBuilder.create().useSystemProperties().build());
+		}
+
+		public DynamicClientRegistrationLoader(HttpClient httpClient) {
+			this.httpFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+		}
 
 		@Override
 		public RegisteredClient load(ServerConfiguration serverConfig) throws Exception {

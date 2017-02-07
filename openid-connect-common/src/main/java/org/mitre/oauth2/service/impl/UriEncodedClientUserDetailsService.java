@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2016 The MITRE Corporation
+ * Copyright 2017 The MITRE Corporation
  *   and the MIT Internet Trust Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -68,7 +68,7 @@ public class UriEncodedClientUserDetailsService implements UserDetailsService {
 
 			if (client != null) {
 
-				String encodedPassword = UriUtils.encodeQueryParam(Strings.nullToEmpty(client.getClientSecret()), "UTF-8");
+				String encodedPassword = UriUtils.encodePathSegment(Strings.nullToEmpty(client.getClientSecret()), "UTF-8");
 
 				if (config.isHeartMode() || // if we're running HEART mode turn off all client secrets
 						(client.getTokenEndpointAuthMethod() != null &&
